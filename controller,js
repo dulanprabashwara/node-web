@@ -1,0 +1,38 @@
+const { response } = require('./app');
+const user = require('./model');
+const getUsers = (req,res,next)=>{
+    user.find()
+    .then(response => {res.json(response);    })
+    .catch(error=>{
+        res.json({error:error})
+    })
+}
+const adduser = (req,res,next)=>{
+    const user = new user({
+        id:req.body.id , name: req.body.name
+    })
+    user.save()
+    .then(response =>{res.json(response)})
+    .catch(err=>{
+        res.json({error})
+    })
+
+}
+const updateuser = (req,res,next)=>{
+    const {id,name }= req.nody;
+    user.updateOne({id:id},{set:{name:name}})
+    .then(response=>{res.json(response)})
+    .catch(err=>{
+        res.json({error})
+    })
+}
+const deleteuser = (req,res,next)=>{
+    const id = req.body.id;
+    user.deleteone({id:id}).then(response =>{res.json(response)})
+    .catch((error)=>{res.json({error:error})})
+}
+exports.getUsers = getUsers;
+exports.adduser = adduser;
+exports.updateuser = updateuser;
+exports.deleteuser = deleteuser;
+
